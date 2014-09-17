@@ -1,7 +1,5 @@
 " Prevent from loading multiple times.
-if exists('g:loaded_lengthmatters')
-  finish
-endif
+if exists('g:loaded_lengthmatters') | finish | endif
 
 " Set some defaults.
 
@@ -12,7 +10,7 @@ endif
 
 " The colors used to highlight the match.
 if !exists('g:lengthmatters_colors')
-  let g:lengthmatters_colors = 'ctermbg=red guibg=#592929'
+  let g:lengthmatters_colors = 'ctermbg=red guibg=gray'
 endif
 
 " The column at which the highlighting will start.
@@ -30,6 +28,7 @@ let s:highlight_command =
 " match [name] [regex]
 let s:match_command =
       \ 'match ' . g:lengthmatters_match_name . ' ' . s:regex
+
 
 " Hook up the matching and highlighting to autocommands.
 augroup lengthmatters
