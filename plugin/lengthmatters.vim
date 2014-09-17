@@ -20,8 +20,8 @@ if !exists('g:lengthmatters_colors')
 endif
 
 " The column at which the highlighting will start.
-if !exists('g:lengthmatters_column')
-  let g:lengthmatters_column = 81
+if !exists('g:lengthmatters_start_at_column')
+  let g:lengthmatters_start_at_column = 81
 endif
 
 
@@ -31,7 +31,7 @@ function! LengthmattersEnable()
   if exists('b:lengthmatters_match') | return | endif
 
   " Create a new match.
-  let l:regex = '\%' . g:lengthmatters_column . 'v.\+'
+  let l:regex = '\%' . g:lengthmatters_start_at_column . 'v.\+'
   let b:lengthmatters_match = matchadd(g:lengthmatters_match_name, l:regex)
 endfunction
 
