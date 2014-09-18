@@ -2,6 +2,7 @@
 if exists('g:loaded_lengthmatters') | finish | endif
 
 
+
 " Set some defaults.
 
 " If this is on, the highlighting will be done in every new buffer.
@@ -25,31 +26,44 @@ if !exists('g:lengthmatters_start_at_column')
 endif
 
 
-" Enable the highlighting by creating a new match (through `matchadd`) or by
-" using the match which already exists for this buffer.
-function! LengthmattersEnable()
-  if exists('b:lengthmatters_match') | return | endif
 
-  " Create a new match.
+" Force the enabling of the highlighting by setting `w:lengthmatters_active` to
+" 1 and by adding the match throught `matchadd`.
+function! LengthmattersEnable()
+  let w:lengthmatters_active = 1
   let l:regex = '\%' . g:lengthmatters_start_at_column . 'v.\+'
-  let b:lengthmatters_match = matchadd(g:lengthmatters_match_name, l:regex)
+  let w:lengthmatters_match = matchadd(g:lengthmatters_match_name, l:regex)
 endfunction
 
-" Disable the highlighting by deleting the match associated with this buffer.
+" Force the disabling of the highlighting by setting `w:lengthmatters_active` to
+" 0, deleting the previously added match and unletting the
+" `w:lengthmatters_match` variable.
 function! LengthmattersDisable()
-  if !exists('b:lengthmatters_match') | return | endif
-  call matchdelete(b:lengthmatters_match)
-  unlet b:lengthmatters_match
+  let w:lengthmatters_active = 0
+  call matchdelete(w:lengthmatters_match)
+  unlet w:lengthmatters_match
 endfunction
 
 " Toggle between active and inactive states.
 function! LengthmattersToggle()
-  if exists('b:lengthmatters_match')
-    call LengthmattersDisable()
+  if !exists('w:lengthmatters_active') || !w:lengthmatters_active
+    call LengthmattersEnable()
   else
+    call LengthmattersDisable()
+ endif
+endfunction
+
+" This function gets called on every autocmd trigger (defined later in this
+" script).
+function s:AutocmdTrigger()
+  " Force enable if there's no w:lengthmatters_active variable (never
+  " enabled/disabled before now) and the default is to activate the
+  " highlighting.
+  if !exists('w:lengthmatters_active') && g:lengthmatters_on_by_default
     call LengthmattersEnable()
   endif
 endfunction
+
 
 
 " Highlight the future match once; enabling/disabling is achieved by
@@ -59,19 +73,19 @@ endfunction
 exec 'highlight ' g:lengthmatters_match_name . ' ' . g:lengthmatters_colors
 
 
+
 " Execute the matching only if it's enabled by default.
 augroup lengthmatters
   autocmd!
-  autocmd BufEnter,BufReadPost,BufNewFile *
-        \ if g:lengthmatters_on_by_default |
-        \   call LengthmattersEnable() |
-        \ endif
+  autocmd WinEnter,BufRead * call s:AutocmdTrigger()
 augroup END
+
 
 
 " Define the `:LengthmattersToggle` command which, guess what, toggles the
 " highlighting of long lines.
 command! LengthmattersToggle call LengthmattersToggle()
+
 
 
 " The plugin has been loaded.
