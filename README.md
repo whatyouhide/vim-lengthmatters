@@ -3,6 +3,8 @@
 Highlight the part of a line that goes over the 80th (or whatever you like)
 column.
 
+![screenshot][screenshot]
+
 I've had this functionality in my `.vimrc` for a long time, and finally decided
 to extract it into a plugin. The idea is extremely simple, a gazillion example
 of how to to this can be found online, but still... I like making plugins.
@@ -94,3 +96,4 @@ you're from 1920 or something) you set this variable to `41`.
 [vim-plug]: https://github.com/junegunn/vim-plug
 [wtfpl]: http://www.wtfpl.net/
 [wtfpl-logo]: http://www.wtfpl.net/wp-content/uploads/2012/12/logo-220x1601.png
+[screenshot]: http://i.imgur.com/7lQRyRY.png "A screenshot of the plugin"
