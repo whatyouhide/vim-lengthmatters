@@ -5,7 +5,7 @@ if exists('g:loaded_lengthmatters') | finish | endif
 
 " Set some defaults.
 
-" If this is on, the highlighting will be done in every new buffer.
+" If this is on, the highlighting will be done in every new buffer/window.
 if !exists('g:lengthmatters_on_by_default')
   let g:lengthmatters_on_by_default = 1
 endif
@@ -25,25 +25,46 @@ if !exists('g:lengthmatters_start_at_column')
   let g:lengthmatters_start_at_column = 81
 endif
 
+" The filetypes where we don't want any highlighting.
+if (!exists('g:lengthmatters_excluded'))
+  let g:lengthmatters_excluded = [
+        \ 'unite', 'tagbar', 'startify',
+        \ 'gundo', 'vimshell', 'w3m',
+        \ 'nerdtree']
+endif
+
 
 
 " Force the enabling of the highlighting by setting `w:lengthmatters_active` to
 " 1 and by adding the match throught `matchadd`.
 function! LengthmattersEnable()
-  call s:Highlight()
+  " Do nothing if this is an excluded filetype.
+  if s:InExcludedFiletypes() | return | endif
+
   let w:lengthmatters_active = 1
-  let l:regex = '\%' . g:lengthmatters_start_at_column . 'v.\+'
-  let w:lengthmatters_match = matchadd(g:lengthmatters_match_name, l:regex)
+  call s:Highlight()
+
+  " Create a new match if it doesn't exist already (in order to avoid creating
+  " multiple matches for the same window).
+  if !exists('w:lengthmatters_match')
+    let l:regex = '\%' . g:lengthmatters_start_at_column . 'v.\+'
+    let w:lengthmatters_match = matchadd(g:lengthmatters_match_name, l:regex)
+  endif
 endfunction
+
 
 " Force the disabling of the highlighting by setting `w:lengthmatters_active` to
 " 0, deleting the previously added match and unletting the
 " `w:lengthmatters_match` variable.
 function! LengthmattersDisable()
   let w:lengthmatters_active = 0
-  call matchdelete(w:lengthmatters_match)
-  unlet w:lengthmatters_match
+
+  if exists('w:lengthmatters_match')
+    call matchdelete(w:lengthmatters_match)
+    unlet w:lengthmatters_match
+  endif
 endfunction
+
 
 " Toggle between active and inactive states.
 function! LengthmattersToggle()
@@ -54,32 +75,40 @@ function! LengthmattersToggle()
  endif
 endfunction
 
+
+" Check if we're in an excluded filetype buffer.
+function! s:InExcludedFiletypes()
+  return index(g:lengthmatters_excluded, &ft) >= 0
+endfunction
+
+
 " Execute the highlight command.
 function! s:Highlight()
   exec 'highlight ' g:lengthmatters_match_name . ' ' . g:lengthmatters_colors
 endfunction
 
+
 " This function gets called on every autocmd trigger (defined later in this
-" script).
+" script). It disables the highlighting on the excluded filetypes and enables it
+" if it wasn't enabled/disabled before.
 function! s:AutocmdTrigger()
-  " Force enable if there's no w:lengthmatters_active variable (never
-  " enabled/disabled before now) and the default is to activate the
-  " highlighting.
-  if !exists('w:lengthmatters_active') && g:lengthmatters_on_by_default
+  if s:InExcludedFiletypes()
+    call LengthmattersDisable()
+  elseif !exists('w:lengthmatters_active') && g:lengthmatters_on_by_default
     call LengthmattersEnable()
   endif
 endfunction
 
 
 
-" Execute the matching only if it's enabled by default.
 augroup lengthmatters
   autocmd!
-  " Enable (if it's the case) on a bunch of events.
-  autocmd WinEnter,BufRead,BufEnter * call s:AutocmdTrigger()
 
-  " This little shit re-highlights the match on every colorscheme change which,
-  " plot twist, happens also when the `bg` option is changed.
+  " Enable (if it's the case) on a bunch of events (the filetype event is there
+  " so that we can avoid highlighting excluded filetypes.
+  autocmd WinEnter,BufEnter,BufRead,FileType * call s:AutocmdTrigger()
+
+  " Re-highlight the match on every colorscheme change (includes bg changes).
   autocmd ColorScheme * call s:Highlight()
 augroup END
 

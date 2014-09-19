@@ -61,6 +61,15 @@ If this variable is set to `0`, no highlighting will be done when opening a new
 buffer. Highlighting can still be activated with `:LengthmattersToggle` or
 through calling one of the previously mentioned functions.
 
+##### `g:lengthmatters_excluded`
+
+(defaults to
+`['unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m',
+'nerdtree']`)  
+
+A list of **filetypes** for which the highlighting isn't (and can't be) enabled.
+For example, if you're into nesting folders and use NERDTree this is for you.
+
 ##### `g:lengthmatters_match_name`
 
 (defaults to `OverLength`)  
