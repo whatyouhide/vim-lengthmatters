@@ -1,7 +1,7 @@
 # lengthmatters.vim
 
-Highlight the part of a line that goes over the 80th (or whatever you like)
-column.
+Highlight the part of a line that doesn't fit into `textwidth` (or really,
+whatever width you like).
 
 ![screenshot][screenshot]
 
@@ -13,20 +13,16 @@ of how to to this can be found online, but still... I like making plugins.
 
 I personally moved from [Vundle][vundle] to [vim-plug][vim-plug] a while ago and
 never looked back. Anyways, whatever floats your boat:
-
 ``` viml
 " vim-plug
 Plug 'whatyouhide/lengthmatters'
-
 " NeoBundle
 NeoBundle 'whatyouhide/lengthmatters'
-
 " Vundle
 Plugin 'whatyouhide/lengthmatters'
 ```
 
 You pathogen dinosaurs can just clone the repo:
-
 ``` bash
 git clone https://github.com/whatyouhide/vim-lengthmatters.git ~/.vim/bundle
 ```
@@ -38,13 +34,16 @@ The highlighting functionality operates always on a **per-window** basis,
 meaning you can keep it enabled on a window and disabled on another one at the
 same time (think of splits, even both on the same file!).
 
-The plugin provides a bunch of commands. Each command has a corresponding
-function -- e.g. `:LengthmattersEnable` has a corresponding
-`haveLengthmattersEnable()` function -- to be used when scripting vim.
+By default, it's based on the value of the `textwidth` option (cool uh?), but
+this can be changed in the options (see `:h 'textwidth'` for more infos).
 
-- `:LengthmattersToggle`: toggle the highligthing for the current window
+The plugin provides a bunch of commands:
+
+- `:LengthmattersToggle`: toggle the highlighting for the current window
 - `:LengthmattersEnable`: enable the highlighting for the current window
 - `:LengthmattersDisable`: disable the highlighting for the current window
+- `:LengthmattersReload`: force reloading (useful if something goes wrong, or
+    `textwidth` changes, or god knows what)
 - `:LengthmattersEnableAll`: enable the highlighting for all open windows
 - `:LengthmattersDisableAll`: disable the highlighting for all open windows
 
@@ -59,10 +58,23 @@ let g:foo = 'foo'
 
 ##### `g:lengthmatters_on_by_default`
 
+(defaults to `1`)  If this variable is set to `0`, no highlighting will be done
+when opening a new buffer. Highlighting can still be activated with one of the
+previously mentioned commands.
+
+##### `g:lengthmatters_start_at_column`
+
+(defaults to `81`)  
+The value of this variable is the *first character* to be highlighted; the
+highlighting will continue until the end of the line. This means that if it's
+okay for lines to be `40` characters longm length of `40` characters (because
+you're from 1920 or something) you set this variable to `41`.
+
+##### `g:lengthmatters_use_textwidth`
+
 (defaults to `1`)  
-If this variable is set to `0`, no highlighting will be done when opening a new
-buffer. Highlighting can still be activated with `:LengthmattersToggle` or
-through calling one of the previously mentioned functions.
+Whether to highlight based on the value of `textwidth`. If `textwidth` is not
+set, it will fall back to `g:lengthmatters_start_at_column`.
 
 ##### `g:lengthmatters_excluded`
 
@@ -71,7 +83,6 @@ through calling one of the previously mentioned functions.
 'nerdtree']`)  
 
 A list of **filetypes** for which the highlighting isn't (and can't be) enabled.
-For example, if you're into nesting folders and use NERDTree this is for you.
 
 ##### `g:lengthmatters_match_name`
 
@@ -89,13 +100,6 @@ This can be done also with the command:
 highlight [match-name] [colors]
 ```
 
-##### `g:lengthmatters_start_at_column`
-
-(defaults to `81`)  
-The value of this variable is the *first character* to be highlighted; the
-highlighting will continue until the end of the line. This means that if it's
-okay for lines to be `40` characters longm length of `40` characters (because
-you're from 1920 or something) you set this variable to `41`.
 
 
 ## Testing

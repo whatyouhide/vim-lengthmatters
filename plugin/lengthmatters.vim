@@ -2,44 +2,40 @@
 if exists('g:loaded_lengthmatters') | finish | endif
 
 
+" A couple of helper funcs to set the default value of an int/string variable.
+function! s:DefaultInt(name, value)
+  if exists('g:lengthmatters_' . a:name) | return | endif
+  exec 'let g:lengthmatters_' . a:name . ' = ' . a:value
+endfunction
+function! s:DefaultStr(name, value)
+  if exists('g:lengthmatters_' . a:name) | return | endif
+  exec 'let g:lengthmatters_' . a:name . ' = ' . string(a:value)
+endfunction
 
 " Set some defaults.
-
-" If this is on, the highlighting will be done in every new buffer/window.
-if !exists('g:lengthmatters_on_by_default')
-  let g:lengthmatters_on_by_default = 1
-endif
-
-" The name of the match (defaults to 'OverLength').
-if !exists('g:lengthmatters_match_name')
-  let g:lengthmatters_match_name = 'OverLength'
-endif
-
-" The colors used to highlight the match.
-if !exists('g:lengthmatters_colors')
-  let g:lengthmatters_colors = 'ctermbg=lightgray guibg=gray'
-endif
-
-" The column at which the highlighting will start.
-if !exists('g:lengthmatters_start_at_column')
-  let g:lengthmatters_start_at_column = 81
-endif
-
-" The filetypes where we don't want any highlighting.
+call s:DefaultInt('on_by_default', 1)
+call s:DefaultInt('use_textwidth', 1)
+call s:DefaultInt('start_at_column', 81)
+call s:DefaultStr('match_name', 'OverLength')
+call s:DefaultStr('colors', 'ctermbg=lightgray guibg=gray')
 if (!exists('g:lengthmatters_excluded'))
-  let g:lengthmatters_excluded = [
-        \ 'unite', 'tagbar', 'startify',
-        \ 'gundo', 'vimshell', 'w3m',
-        \ 'nerdtree']
+  let g:lengthmatters_excluded = ['unite', 'tagbar', 'startify',
+        \ 'gundo', 'vimshell', 'w3m', 'nerdtree']
 endif
 
 
 
-" Force the enabling of the highlighting by setting `w:lengthmatters_active` to
-" 1 and by adding the match throught `matchadd`.
-function! LengthmattersEnable()
+" Enable the highlighting (if the filetype is not an excluded ft). Reuse the
+" match of the current window if available, unless the textwidth has changed. If
+" it has, force a reload by disabling the highlighting and re-enabling it.
+function! s:Enable()
   " Do nothing if this is an excluded filetype.
-  if s:InExcludedFiletypes() | return | endif
+  if index(g:lengthmatters_excluded, &ft) >= 0 | return | endif
+
+  if s:ShouldUseTw() && s:TwChanged()
+    call s:Disable()
+    let w:lengthmatters_tw = &tw
+  endif
 
   let w:lengthmatters_active = 1
   call s:Highlight()
@@ -47,16 +43,16 @@ function! LengthmattersEnable()
   " Create a new match if it doesn't exist already (in order to avoid creating
   " multiple matches for the same window).
   if !exists('w:lengthmatters_match')
-    let l:regex = '\%' . g:lengthmatters_start_at_column . 'v.\+'
+    let l:column = s:ShouldUseTw() ? &tw + 1 : g:lengthmatters_start_at_column
+    let l:regex = '\%' . l:column . 'v.\+'
     let w:lengthmatters_match = matchadd(g:lengthmatters_match_name, l:regex)
   endif
 endfunction
 
 
-" Force the disabling of the highlighting by setting `w:lengthmatters_active` to
-" 0, deleting the previously added match and unletting the
-" `w:lengthmatters_match` variable.
-function! LengthmattersDisable()
+" Force the disabling of the highlighting and delete the match of the current
+" window, if available.
+function! s:Disable()
   let w:lengthmatters_active = 0
 
   if exists('w:lengthmatters_match')
@@ -67,29 +63,18 @@ endfunction
 
 
 " Toggle between active and inactive states.
-function! LengthmattersToggle()
+function! s:Toggle()
   if !exists('w:lengthmatters_active') || !w:lengthmatters_active
-    call LengthmattersEnable()
+    call s:Enable()
   else
-    call LengthmattersDisable()
+    call s:Disable()
  endif
 endfunction
 
 
-" Enable highlighting for all the open windows.
-function! LengthmattersEnableAll()
-  windo call LengthmattersEnable()
-endfunction
-
-" Disable highlighting for all the open windows.
-function! LengthmattersDisableAll()
-  windo call LengthmattersDisable()
-endfunction
-
-
-" Check if we're in an excluded filetype buffer.
-function! s:InExcludedFiletypes()
-  return index(g:lengthmatters_excluded, &ft) >= 0
+" Return true if the textwidth should be used for creating the hl match.
+function s:ShouldUseTw()
+  return g:lengthmatters_use_textwidth && &tw > 0
 endfunction
 
 
@@ -99,14 +84,22 @@ function! s:Highlight()
 endfunction
 
 
+" Return true if the textwidth has changed since the last time this plugin saw
+" it. We're assuming that no recorder tw means it changed.
+function! s:TwChanged()
+  return !exists('w:lengthmatters_tw') || &tw != w:lengthmatters_tw
+endfunction
+
+
 " This function gets called on every autocmd trigger (defined later in this
 " script). It disables the highlighting on the excluded filetypes and enables it
-" if it wasn't enabled/disabled before.
+" if it wasn't enabled/disabled before or if there's a new textwidth.
 function! s:AutocmdTrigger()
-  if s:InExcludedFiletypes()
-    call LengthmattersDisable()
+  if index(g:lengthmatters_excluded, &ft) >= 0
+    call s:Disable()
   elseif !exists('w:lengthmatters_active') && g:lengthmatters_on_by_default
-    call LengthmattersEnable()
+        \ || (s:ShouldUseTw() && s:TwChanged())
+    call s:Enable()
   endif
 endfunction
 
@@ -114,11 +107,9 @@ endfunction
 
 augroup lengthmatters
   autocmd!
-
   " Enable (if it's the case) on a bunch of events (the filetype event is there
   " so that we can avoid highlighting excluded filetypes.
   autocmd WinEnter,BufEnter,BufRead,FileType * call s:AutocmdTrigger()
-
   " Re-highlight the match on every colorscheme change (includes bg changes).
   autocmd ColorScheme * call s:Highlight()
 augroup END
@@ -127,11 +118,12 @@ augroup END
 
 " Define the a bunch of commands (which map one to one with the functions
 " defined before).
-command! LengthmattersEnable call LengthmattersEnable()
-command! LengthmattersDisable call LengthmattersDisable()
-command! LengthmattersToggle call LengthmattersToggle()
-command! LengthmattersEnableAll call LengthmattersEnableAll()
-command! LengthmattersDisableAll call LengthmattersDisableAll()
+command! LengthmattersEnable call s:Enable()
+command! LengthmattersDisable call s:Disable()
+command! LengthmattersToggle call s:Toggle()
+command! LengthmattersReload call s:Disable() | call s:Enable()
+command! LengthmattersEnableAll windo call s:Enable()
+command! LengthmattersDisableAll windo call s:Disable()
 
 
 

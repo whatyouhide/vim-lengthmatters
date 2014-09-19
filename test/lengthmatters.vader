@@ -4,17 +4,10 @@ Execute (global variables are set):
   Assert exists('g:lengthmatters_colors')
   Assert exists('g:lengthmatters_start_at_column')
   Assert exists('g:lengthmatters_excluded')
+  Assert exists('g:lengthmatters_use_textwidth')
 
 
-Execute (global functions are provided):
-  Assert exists('*LengthmattersEnable')
-  Assert exists('*LengthmattersDisable')
-  Assert exists('*LengthmattersToggle')
-  Assert exists('*LengthmattersEnableAll')
-  Assert exists('*LengthmattersDisableAll')
-
-
-Execute (a global toggle command is provided):
+Execute (global commands are provided):
   Assert exists(':LengthmattersEnable')
   Assert exists(':LengthmattersDisable')
   Assert exists(':LengthmattersToggle')
@@ -23,34 +16,26 @@ Execute (a global toggle command is provided):
 
 
 Execute (LengthmattersEnable() forces enabling of the plugin):
-  call LengthmattersEnable()
+  LengthmattersEnable
   Assert exists('w:lengthmatters_active')
   Assert w:lengthmatters_active
 
 
 Execute (LengthmattersEnable() always creates an hl group):
-  call LengthmattersEnable()
+  LengthmattersEnable
   Assert hlexists(g:lengthmatters_match_name)
 
 
-Execute (LengthmattersEnable() doens't create more than one match per window):
-  let number_of_matches = len(getmatches())
-  call LengthmattersEnable()
-  call LengthmattersEnable()
-  call LengthmattersEnable()
-  AssertEqual number_of_matches, len(getmatches())
-
-
 Execute (LengthmattersDisable() forces disabling of the plugin):
-  call LengthmattersDisable()
+  LengthmattersDisable
   Assert exists('w:lengthmatters_active')
   Assert !w:lengthmatters_active
 
 
 Execute (LengthmattersDisable() deletes a match if present):
   let number_of_matches = len(getmatches())
-  call LengthmattersEnable()
-  call LengthmattersDisable()
+  LengthmattersEnable
+  LengthmattersDisable
   AssertEqual number_of_matches, len(getmatches())
 
 
@@ -58,7 +43,7 @@ Execute (Lengthmatter is inactive in the excluded filetypes):
   let g:lengthmatters_excluded = ['foobar']
   set filetype=foobar
 
-  call LengthmattersDisable()
-  call LengthmattersEnable()
+  LengthmattersDisable
+  LengthmattersEnable
 
   Assert !w:lengthmatters_active
