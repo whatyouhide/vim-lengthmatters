@@ -10,10 +10,16 @@ Execute (global functions are provided):
   Assert exists('*LengthmattersEnable')
   Assert exists('*LengthmattersDisable')
   Assert exists('*LengthmattersToggle')
+  Assert exists('*LengthmattersEnableAll')
+  Assert exists('*LengthmattersDisableAll')
 
 
 Execute (a global toggle command is provided):
+  Assert exists(':LengthmattersEnable')
+  Assert exists(':LengthmattersDisable')
   Assert exists(':LengthmattersToggle')
+  Assert exists(':LengthmattersEnableAll')
+  Assert exists(':LengthmattersDisableAll')
 
 
 Execute (LengthmattersEnable() forces enabling of the plugin):
@@ -29,11 +35,9 @@ Execute (LengthmattersEnable() always creates an hl group):
 
 Execute (LengthmattersEnable() doens't create more than one match per window):
   let number_of_matches = len(getmatches())
-
   call LengthmattersEnable()
   call LengthmattersEnable()
   call LengthmattersEnable()
-
   AssertEqual number_of_matches, len(getmatches())
 
 

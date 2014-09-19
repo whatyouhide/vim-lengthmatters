@@ -76,6 +76,17 @@ function! LengthmattersToggle()
 endfunction
 
 
+" Enable highlighting for all the open windows.
+function! LengthmattersEnableAll()
+  windo call LengthmattersEnable()
+endfunction
+
+" Disable highlighting for all the open windows.
+function! LengthmattersDisableAll()
+  windo call LengthmattersDisable()
+endfunction
+
+
 " Check if we're in an excluded filetype buffer.
 function! s:InExcludedFiletypes()
   return index(g:lengthmatters_excluded, &ft) >= 0
@@ -114,9 +125,13 @@ augroup END
 
 
 
-" Define the `:LengthmattersToggle` command which, guess what, toggles the
-" highlighting of long lines.
+" Define the a bunch of commands (which map one to one with the functions
+" defined before).
+command! LengthmattersEnable call LengthmattersEnable()
+command! LengthmattersDisable call LengthmattersDisable()
 command! LengthmattersToggle call LengthmattersToggle()
+command! LengthmattersEnableAll call LengthmattersEnableAll()
+command! LengthmattersDisableAll call LengthmattersDisableAll()
 
 
 

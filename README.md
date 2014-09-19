@@ -34,17 +34,20 @@ git clone https://github.com/whatyouhide/vim-lengthmatters.git ~/.vim/bundle
 
 ## What's in it
 
-This plugin offers some fancier functionality than just coloring lines that are
-too long:
+The highlighting functionality operates always on a **per-window** basis,
+meaning you can keep it enabled on a window and disabled on another one at the
+same time (think of splits, even both on the same file!).
 
-- `:LengthmattersToggle`: toggle the highlighting functionality on a
-    **per-buffer** basis, meaning you can keep it enabled on a buffer and
-    disabled on another one at the same time.
-- A bunch of easily guess-what-they-do functions to use in whatever way you find
-    appropriate:
-    * `LengthmattersToggle()`
-    * `LengthmattersDisable()`
-    * `LengthmattersEnable()`
+The plugin provides a bunch of commands. Each command has a corresponding
+function -- e.g. `:LenghmattersEnable` has a corresponding
+`haveLenghmattersEnable()` function -- to be used when scripting vim.
+
+- `:LengthmattersToggle`: toggle the highligthing for the current window
+- `:LengthmattersEnable`: enable the highlighting for the current window
+- `:LengthmattersDisable`: disable the highlighting for the current window
+- `:LengthmattersEnableAll`: enable the highlighting for all open windows
+- `:LengthmattersDisableAll`: disable the highlighting for all open windows
+
 
 ## Configuration
 
@@ -97,8 +100,9 @@ you're from 1920 or something) you set this variable to `41`.
 
 ## Testing
 
-If you want to test this plugin, be sure to have [vader.vim][vader] installed,
+If you want to test this plugin, be sure you have [vader.vim][vader] installed,
 then open `tests/lengthmatters.vader` and run `:Vader`.
+
 
 ## License
 
