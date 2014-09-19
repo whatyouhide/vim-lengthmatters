@@ -30,6 +30,7 @@ endif
 " Force the enabling of the highlighting by setting `w:lengthmatters_active` to
 " 1 and by adding the match throught `matchadd`.
 function! LengthmattersEnable()
+  call s:Highlight()
   let w:lengthmatters_active = 1
   let l:regex = '\%' . g:lengthmatters_start_at_column . 'v.\+'
   let w:lengthmatters_match = matchadd(g:lengthmatters_match_name, l:regex)
@@ -53,9 +54,14 @@ function! LengthmattersToggle()
  endif
 endfunction
 
+" Execute the highlight command.
+function! s:Highlight()
+  exec 'highlight ' g:lengthmatters_match_name . ' ' . g:lengthmatters_colors
+endfunction
+
 " This function gets called on every autocmd trigger (defined later in this
 " script).
-function s:AutocmdTrigger()
+function! s:AutocmdTrigger()
   " Force enable if there's no w:lengthmatters_active variable (never
   " enabled/disabled before now) and the default is to activate the
   " highlighting.
@@ -66,18 +72,15 @@ endfunction
 
 
 
-" Highlight the future match once; enabling/disabling is achieved by
-" creating/deleting matches and leaving the highlight unmodified. This is useful
-" also for when users want to write a custom highlight command, maybe for
-" tweaking a colorscheme.
-exec 'highlight ' g:lengthmatters_match_name . ' ' . g:lengthmatters_colors
-
-
-
 " Execute the matching only if it's enabled by default.
 augroup lengthmatters
   autocmd!
-  autocmd WinEnter,BufRead * call s:AutocmdTrigger()
+  " Enable (if it's the case) on a bunch of events.
+  autocmd WinEnter,BufRead,BufEnter * call s:AutocmdTrigger()
+
+  " This little shit re-highlights the match on every colorscheme change which,
+  " plot twist, happens also when the `bg` option is changed.
+  autocmd ColorScheme * call s:Highlight()
 augroup END
 
 
