@@ -1,0 +1,34 @@
+Execute (global variables are set):
+  Assert exists('g:lengthmatters_on_by_default')
+  Assert exists('g:lengthmatters_match_name')
+  Assert exists('g:lengthmatters_colors')
+  Assert exists('g:lengthmatters_start_at_column')
+
+Execute (global functions are provided):
+  Assert exists('*LengthmattersEnable')
+  Assert exists('*LengthmattersDisable')
+  Assert exists('*LengthmattersToggle')
+
+Execute (a global toggle command is provided):
+  Assert exists(':LengthmattersToggle')
+
+Execute (LengthmattersEnable() forces enabling of the plugin):
+  call LengthmattersEnable()
+  Assert exists('w:lengthmatters_active')
+  Assert w:lengthmatters_active
+
+Execute (LengthmattersEnable() always creates a new match):
+  let number_of_matches = len(getmatches())
+  call LengthmattersEnable()
+  AssertEqual number_of_matches + 1, len(getmatches())
+
+Execute (LengthmattersDisable() forces disabling of the plugin):
+  call LengthmattersDisable()
+  Assert exists('w:lengthmatters_active')
+  Assert !w:lengthmatters_active
+
+Execute (LengthmattersDisable() deletes a match if present):
+  let number_of_matches = len(getmatches())
+  call LengthmattersEnable()
+  call LengthmattersDisable()
+  AssertEqual number_of_matches, len(getmatches())

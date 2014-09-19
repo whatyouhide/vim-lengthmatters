@@ -86,6 +86,11 @@ okay for lines to be `40` characters longm length of `40` characters (because
 you're from 1920 or something) you set this variable to `41`.
 
 
+## Testing
+
+If you want to test this plugin, be sure to have [vader.vim][vader] installed,
+then open `tests/lengthmatters.vader` and run `:Vader`.
+
 ## License
 
 &copy; Andrea Leopardi
@@ -97,3 +102,4 @@ you're from 1920 or something) you set this variable to `41`.
 [wtfpl]: http://www.wtfpl.net/
 [wtfpl-logo]: http://www.wtfpl.net/wp-content/uploads/2012/12/logo-220x1601.png
 [screenshot]: http://i.imgur.com/7lQRyRY.png "A screenshot of the plugin"
+[vader]: https://github.com/junegunn/vader.vim
