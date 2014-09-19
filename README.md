@@ -39,8 +39,8 @@ meaning you can keep it enabled on a window and disabled on another one at the
 same time (think of splits, even both on the same file!).
 
 The plugin provides a bunch of commands. Each command has a corresponding
-function -- e.g. `:LenghmattersEnable` has a corresponding
-`haveLenghmattersEnable()` function -- to be used when scripting vim.
+function -- e.g. `:LengthmattersEnable` has a corresponding
+`haveLengthmattersEnable()` function -- to be used when scripting vim.
 
 - `:LengthmattersToggle`: toggle the highligthing for the current window
 - `:LengthmattersEnable`: enable the highlighting for the current window
