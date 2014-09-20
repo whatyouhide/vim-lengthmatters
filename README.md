@@ -61,7 +61,8 @@ let g:foo = 'foo'
 
 ##### `g:lengthmatters_on_by_default`
 
-(defaults to `1`)  If this variable is set to `0`, no highlighting will be done
+(defaults to `1`)  
+If this variable is set to `0`, no highlighting will be done
 when opening a new buffer. Highlighting can still be activated with one of the
 previously mentioned commands.
 

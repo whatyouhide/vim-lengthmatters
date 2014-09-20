@@ -1,0 +1,143 @@
+*lengthmatters.txt* Highlight columns over the textwidth
+
+Author: Andrea Leopardi <an.leopardi@gmail.com>
+License: WTFPL (see |LengthmattersLicense|)
+
+
+*lengthmatters*
+
+             _   _   _   _   _   _   _   _   _   _   _   _   _
+            / \ / \ / \ / \ / \ / \ / \ / \ / \ / \ / \ / \ / \
+           ( l | e | n | g | t | h | m | a | t | t | e | r | s )
+            \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/
+
+
+==============================================================================
+CONTENTS                                                *LengthmattersContents*
+
+1. Usage ................ |LengthmattersUsage|
+2. Commands ............. |LengthmattersCommands|
+3. Configuration ........ |LengthmattersMappings|
+4. License .............. |LengthmattersLicense|
+5. Bugs ................. |LengthmattersBugs|
+6. Contributing ......... |LengthmattersContributing|
+7. About ................ |LengthmattersAbout|
+
+
+==============================================================================
+Section 1: Usage                                           *LengthmattersUsage*
+
+There's not much you have to do to use this plugin. By default (no
+configuration), it highlights the part of the line that goes over whatever
+your |'textwidth'| is, or 81 characters if 'textwidth' is not set.
+
+For help on what commands are provided see |LengthmattersCommands| while for
+configuration options look at |LengthmattersConfiguration|.
+
+
+==============================================================================
+Section 3: Commands                                     *LengthmattersCommands*
+
+The plugin provides a bunch of utility commands, but I don't expect you to use
+them much since this is more of a "behind the scenes" plugin.
+
+Anyway, these are:
+
+:LengthmattersToggle        Toggle the highlighting for the current buffer
+:LengthmattersEnable        Enable the highlighting for the current buffer
+:LengthmattersDisable       Disable the highlighting for the current buffer
+:LengthmattersReload        Force reloading (useful if something goes wrong)
+:LengthmattersEnableAll     Enable the highlighting for all open buffers
+:LengthmattersDisableAll    Disable the highlighting for all open buffers
+
+
+==============================================================================
+Section 3: Configuration                           *LengthmattersConfiguration*
+
+You can set a bunch of options to tweak the behavior of the plugin. Every
+option has a default value.
+
+-----------------------------------------------------------------------------
+g:lengthmatters_on_by_default      default: 1
+
+If this variable is set to `0`, no highlighting will be done
+when opening a new buffer. Highlighting can still be activated with one of the
+previously mentioned commands.
+
+-----------------------------------------------------------------------------
+g:lengthmatters_start_at_column    default: 81
+
+The value of this variable is the first character to be highlighted; the
+highlighting will continue until the end of the line. This means that if it's
+okay for lines to be 40 characters longm length of 40 characters (because
+you're from 1920 or something) you set this variable to 41.
+
+-----------------------------------------------------------------------------
+g:lengthmatters_use_textwidth      default: 1
+
+Whether to highlight based on the value of textwidth. If textwidth is not
+set, it will fall back to g:lengthmatters_start_at_column.
+
+-----------------------------------------------------------------------------
+g:lengthmatters_excluded           default: see |LengthmattersExcluded|
+
+A list of filetypes for which the highlighting isn't (and can't be) enabled.
+
+*LengthmattersExcluded* The default list of excluded filetypes is:
+
+    ['unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m', 'nerdtree']
+
+-----------------------------------------------------------------------------
+g:lengthmatters_match_name         default: 'OverLength'
+
+The name of the syntax element that will be used to highlight and match the
+overly long lines.
+
+-----------------------------------------------------------------------------
+g:lengthmatters_colors             default: 'ctermbg=lightgray guibg=darkgray'
+
+By changing this value you can customize the colors of the highlighted parts.
+
+
+==============================================================================
+Section 4: License                                       *LengthmattersLicense*
+
+DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+                    Version 2, December 2004
+
+ Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
+
+ Everyone is permitted to copy and distribute verbatim or modified
+ copies of this license document, and changing it is allowed as long
+ as the name is changed.
+
+            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+
+  0. You just DO WHAT THE FUCK YOU WANT TO.
+
+
+==============================================================================
+Section 5: Bugs                                             *LengthmattersBugs*
+
+If you find any bugs, I'll be more than happy to help you! Just open an issue
+on GitHub (https://github.com/whatyouhide/vim-lengthmatters).
+
+
+==============================================================================
+Section 6: Contributing                             *LengthmattersContributing*
+
+Any kind of help is more than appreciated! You can help by actually
+contributing to the code (make a Pull Request), by helping with the
+documentation or by finding bugs and opening issues. All of this can be done
+over at the plugin's GitHub page,
+http://github.com/whatyouhide/vim-lengthmatters.
+
+
+==============================================================================
+Section 7: About                                           *LengthmattersAbout*
+
+Build with vim and :love: by Andrea Leopardi <an.leopardi@gmail.com>.
+All of the code is on GitHub:
+
+https://github.com/whatyouhide/vim-lengthmatters
