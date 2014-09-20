@@ -26,7 +26,7 @@ endif
 
 
 " Enable the highlighting (if the filetype is not an excluded ft). Reuse the
-" match of the current window if available, unless the textwidth has changed. If
+" match of the current buffer if available, unless the textwidth has changed. If
 " it has, force a reload by disabling the highlighting and re-enabling it.
 function! s:Enable()
   " Do nothing if this is an excluded filetype.
@@ -34,37 +34,37 @@ function! s:Enable()
 
   if s:ShouldUseTw() && s:TwChanged()
     call s:Disable()
-    let w:lengthmatters_tw = &tw
+    let b:lengthmatters_tw = &tw
   endif
 
-  let w:lengthmatters_active = 1
+  let b:lengthmatters_active = 1
   call s:Highlight()
 
   " Create a new match if it doesn't exist already (in order to avoid creating
-  " multiple matches for the same window).
-  if !exists('w:lengthmatters_match')
+  " multiple matches for the same buffer).
+  if !exists('b:lengthmatters_match')
     let l:column = s:ShouldUseTw() ? &tw + 1 : g:lengthmatters_start_at_column
     let l:regex = '\%' . l:column . 'v.\+'
-    let w:lengthmatters_match = matchadd(g:lengthmatters_match_name, l:regex)
+    let b:lengthmatters_match = matchadd(g:lengthmatters_match_name, l:regex)
   endif
 endfunction
 
 
 " Force the disabling of the highlighting and delete the match of the current
-" window, if available.
+" buffer, if available.
 function! s:Disable()
-  let w:lengthmatters_active = 0
+  let b:lengthmatters_active = 0
 
-  if exists('w:lengthmatters_match')
-    call matchdelete(w:lengthmatters_match)
-    unlet w:lengthmatters_match
+  if exists('b:lengthmatters_match')
+    call matchdelete(b:lengthmatters_match)
+    unlet b:lengthmatters_match
   endif
 endfunction
 
 
 " Toggle between active and inactive states.
 function! s:Toggle()
-  if !exists('w:lengthmatters_active') || !w:lengthmatters_active
+  if !exists('b:lengthmatters_active') || !b:lengthmatters_active
     call s:Enable()
   else
     call s:Disable()
@@ -87,7 +87,7 @@ endfunction
 " Return true if the textwidth has changed since the last time this plugin saw
 " it. We're assuming that no recorder tw means it changed.
 function! s:TwChanged()
-  return !exists('w:lengthmatters_tw') || &tw != w:lengthmatters_tw
+  return !exists('b:lengthmatters_tw') || &tw != b:lengthmatters_tw
 endfunction
 
 
@@ -97,7 +97,7 @@ endfunction
 function! s:AutocmdTrigger()
   if index(g:lengthmatters_excluded, &ft) >= 0
     call s:Disable()
-  elseif !exists('w:lengthmatters_active') && g:lengthmatters_on_by_default
+  elseif !exists('b:lengthmatters_active') && g:lengthmatters_on_by_default
         \ || (s:ShouldUseTw() && s:TwChanged())
     call s:Enable()
   endif
@@ -122,8 +122,8 @@ command! LengthmattersEnable call s:Enable()
 command! LengthmattersDisable call s:Disable()
 command! LengthmattersToggle call s:Toggle()
 command! LengthmattersReload call s:Disable() | call s:Enable()
-command! LengthmattersEnableAll windo call s:Enable()
-command! LengthmattersDisableAll windo call s:Disable()
+command! LengthmattersEnableAll bufdo call s:Enable()
+command! LengthmattersDisableAll bufdo call s:Disable()
 
 
 

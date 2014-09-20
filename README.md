@@ -32,22 +32,23 @@ git clone https://github.com/whatyouhide/vim-lengthmatters.git ~/.vim/bundle
 
 ## What's in it
 
-The highlighting functionality operates always on a **per-window** basis,
-meaning you can keep it enabled on a window and disabled on another one at the
-same time (think of splits, even both on the same file!).
+The highlighting functionality operates always on a **per-buffer** basis,
+meaning you can keep it enabled on a buffer and disabled on another one at the
+same time.
 
-By default, it's based on the value of the `textwidth` option (cool uh?), but
-this can be changed in the options (see `:h 'textwidth'` for more infos).
+By default, it's based on the value of the `textwidth` option (it *feels*
+right), but this can be changed in the options. See `:h 'textwidth'` for more
+infos.
 
 The plugin provides a bunch of commands:
 
-- `:LengthmattersToggle`: toggle the highlighting for the current window
-- `:LengthmattersEnable`: enable the highlighting for the current window
-- `:LengthmattersDisable`: disable the highlighting for the current window
+- `:LengthmattersToggle`: toggle the highlighting for the current buffer
+- `:LengthmattersEnable`: enable the highlighting for the current buffer
+- `:LengthmattersDisable`: disable the highlighting for the current buffer
 - `:LengthmattersReload`: force reloading (useful if something goes wrong, or
     `textwidth` changes, or god knows what)
-- `:LengthmattersEnableAll`: enable the highlighting for all open windows
-- `:LengthmattersDisableAll`: disable the highlighting for all open windows
+- `:LengthmattersEnableAll`: enable the highlighting for all open buffers
+- `:LengthmattersDisableAll`: disable the highlighting for all open buffers
 
 
 ## Configuration

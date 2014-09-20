@@ -1,3 +1,7 @@
+Execute (a variable shows that the plugin has been loaded):
+  Assert g:loaded_lengthmatters
+
+
 Execute (global variables are set):
   Assert exists('g:lengthmatters_on_by_default')
   Assert exists('g:lengthmatters_match_name')
@@ -17,8 +21,8 @@ Execute (global commands are provided):
 
 Execute (LengthmattersEnable() forces enabling of the plugin):
   LengthmattersEnable
-  Assert exists('w:lengthmatters_active')
-  Assert w:lengthmatters_active
+  Assert exists('b:lengthmatters_active')
+  Assert b:lengthmatters_active
 
 
 Execute (LengthmattersEnable() always creates an hl group):
@@ -28,8 +32,8 @@ Execute (LengthmattersEnable() always creates an hl group):
 
 Execute (LengthmattersDisable() forces disabling of the plugin):
   LengthmattersDisable
-  Assert exists('w:lengthmatters_active')
-  Assert !w:lengthmatters_active
+  Assert exists('b:lengthmatters_active')
+  Assert !b:lengthmatters_active
 
 
 Execute (LengthmattersDisable() deletes a match if present):
@@ -41,9 +45,10 @@ Execute (LengthmattersDisable() deletes a match if present):
 
 Execute (Lengthmatter is inactive in the excluded filetypes):
   let g:lengthmatters_excluded = ['foobar']
+
   set filetype=foobar
+  Assert !b:lengthmatters_active
 
   LengthmattersDisable
   LengthmattersEnable
-
-  Assert !w:lengthmatters_active
+  Assert !b:lengthmatters_active
