@@ -2,22 +2,25 @@
 if exists('g:loaded_lengthmatters') | finish | endif
 
 
-" A couple of helper funcs to set the default value of an int/string variable.
-function! s:DefaultInt(name, value)
+" A small helper func to set the default value of an int/string variable.
+function! s:Default(name, value)
   if exists('g:lengthmatters_' . a:name) | return | endif
-  exec 'let g:lengthmatters_' . a:name . ' = ' . a:value
-endfunction
-function! s:DefaultStr(name, value)
-  if exists('g:lengthmatters_' . a:name) | return | endif
-  exec 'let g:lengthmatters_' . a:name . ' = ' . string(a:value)
+  let l:val = (type(a:value) == type('') ? string(a:value) : a:value)
+  exec 'let g:lengthmatters_' . a:name . ' = ' . l:val
 endfunction
 
+
 " Set some defaults.
-call s:DefaultInt('on_by_default', 1)
-call s:DefaultInt('use_textwidth', 1)
-call s:DefaultInt('start_at_column', 81)
-call s:DefaultStr('match_name', 'OverLength')
-call s:DefaultStr('colors', 'ctermbg=lightgray guibg=gray')
+call s:Default('on_by_default', 1)
+call s:Default('use_textwidth', 1)
+call s:Default('start_at_column', 81)
+call s:Default('match_name', 'OverLength')
+call s:Default('highlight_command',
+      \ 'highlight ' . g:lengthmatters_match_name .
+      \ ' ctermbg=lightgray guibg=gray'
+      \ )
+
+" Lists are annoying so set them manually.
 if (!exists('g:lengthmatters_excluded'))
   let g:lengthmatters_excluded = ['unite', 'tagbar', 'startify',
         \ 'gundo', 'vimshell', 'w3m', 'nerdtree']
@@ -32,20 +35,22 @@ function! s:Enable()
   " Do nothing if this is an excluded filetype.
   if index(g:lengthmatters_excluded, &ft) >= 0 | return | endif
 
+  " Force a reload if the textwidth is in use and it's changed since the last
+  " time.
   if s:ShouldUseTw() && s:TwChanged()
     call s:Disable()
-    let b:lengthmatters_tw = &tw
+    let w:lengthmatters_tw = &tw
   endif
 
-  let b:lengthmatters_active = 1
+  let w:lengthmatters_active = 1
   call s:Highlight()
 
   " Create a new match if it doesn't exist already (in order to avoid creating
   " multiple matches for the same buffer).
-  if !exists('b:lengthmatters_match')
+  if !exists('w:lengthmatters_match')
     let l:column = s:ShouldUseTw() ? &tw + 1 : g:lengthmatters_start_at_column
     let l:regex = '\%' . l:column . 'v.\+'
-    let b:lengthmatters_match = matchadd(g:lengthmatters_match_name, l:regex)
+    let w:lengthmatters_match = matchadd(g:lengthmatters_match_name, l:regex)
   endif
 endfunction
 
@@ -53,18 +58,18 @@ endfunction
 " Force the disabling of the highlighting and delete the match of the current
 " buffer, if available.
 function! s:Disable()
-  let b:lengthmatters_active = 0
+  let w:lengthmatters_active = 0
 
-  if exists('b:lengthmatters_match')
-    call matchdelete(b:lengthmatters_match)
-    unlet b:lengthmatters_match
+  if exists('w:lengthmatters_match')
+    call matchdelete(w:lengthmatters_match)
+    unlet w:lengthmatters_match
   endif
 endfunction
 
 
 " Toggle between active and inactive states.
 function! s:Toggle()
-  if !exists('b:lengthmatters_active') || !b:lengthmatters_active
+  if !exists('w:lengthmatters_active') || !w:lengthmatters_active
     call s:Enable()
   else
     call s:Disable()
@@ -80,14 +85,16 @@ endfunction
 
 " Execute the highlight command.
 function! s:Highlight()
-  exec 'highlight ' g:lengthmatters_match_name . ' ' . g:lengthmatters_colors
+  exec 'hi clear ' . g:lengthmatters_match_name
+  exec 'hi link ' . g:lengthmatters_match_name . ' NONE'
+  exec g:lengthmatters_highlight_command
 endfunction
 
 
 " Return true if the textwidth has changed since the last time this plugin saw
 " it. We're assuming that no recorder tw means it changed.
 function! s:TwChanged()
-  return !exists('b:lengthmatters_tw') || &tw != b:lengthmatters_tw
+  return !exists('w:lengthmatters_tw') || &tw != w:lengthmatters_tw
 endfunction
 
 
@@ -97,7 +104,7 @@ endfunction
 function! s:AutocmdTrigger()
   if index(g:lengthmatters_excluded, &ft) >= 0
     call s:Disable()
-  elseif !exists('b:lengthmatters_active') && g:lengthmatters_on_by_default
+  elseif !exists('w:lengthmatters_active') && g:lengthmatters_on_by_default
         \ || (s:ShouldUseTw() && s:TwChanged())
     call s:Enable()
   endif
@@ -122,8 +129,8 @@ command! LengthmattersEnable call s:Enable()
 command! LengthmattersDisable call s:Disable()
 command! LengthmattersToggle call s:Toggle()
 command! LengthmattersReload call s:Disable() | call s:Enable()
-command! LengthmattersEnableAll bufdo call s:Enable()
-command! LengthmattersDisableAll bufdo call s:Disable()
+command! LengthmattersEnableAll windo call s:Enable()
+command! LengthmattersDisableAll windo call s:Disable()
 
 
 

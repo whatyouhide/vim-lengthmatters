@@ -18,10 +18,11 @@ CONTENTS                                                *LengthmattersContents*
 1. Usage ................ |LengthmattersUsage|
 2. Commands ............. |LengthmattersCommands|
 3. Configuration ........ |LengthmattersMappings|
-4. License .............. |LengthmattersLicense|
-5. Bugs ................. |LengthmattersBugs|
-6. Contributing ......... |LengthmattersContributing|
-7. About ................ |LengthmattersAbout|
+4. Highlighting ......... |LengthmattersHighlighting|
+5. License .............. |LengthmattersLicense|
+6. Bugs ................. |LengthmattersBugs|
+7. Contributing ......... |LengthmattersContributing|
+8. About ................ |LengthmattersAbout|
 
 
 ==============================================================================
@@ -36,7 +37,7 @@ configuration options look at |LengthmattersConfiguration|.
 
 
 ==============================================================================
-Section 3: Commands                                     *LengthmattersCommands*
+Section 2: Commands                                     *LengthmattersCommands*
 
 The plugin provides a bunch of utility commands, but I don't expect you to use
 them much since this is more of a "behind the scenes" plugin.
@@ -58,14 +59,14 @@ You can set a bunch of options to tweak the behavior of the plugin. Every
 option has a default value.
 
 -----------------------------------------------------------------------------
-g:lengthmatters_on_by_default      default: 1
+*g:lengthmatters_on_by_default*      default: 1
 
 If this variable is set to `0`, no highlighting will be done
 when opening a new buffer. Highlighting can still be activated with one of the
 previously mentioned commands.
 
 -----------------------------------------------------------------------------
-g:lengthmatters_start_at_column    default: 81
+*g:lengthmatters_start_at_column*    default: 81
 
 The value of this variable is the first character to be highlighted; the
 highlighting will continue until the end of the line. This means that if it's
@@ -73,13 +74,13 @@ okay for lines to be 40 characters longm length of 40 characters (because
 you're from 1920 or something) you set this variable to 41.
 
 -----------------------------------------------------------------------------
-g:lengthmatters_use_textwidth      default: 1
+*g:lengthmatters_use_textwidth*      default: 1
 
 Whether to highlight based on the value of textwidth. If textwidth is not
 set, it will fall back to g:lengthmatters_start_at_column.
 
 -----------------------------------------------------------------------------
-g:lengthmatters_excluded           default: see |LengthmattersExcluded|
+*g:lengthmatters_excluded*           default: see |LengthmattersExcluded|
 
 A list of filetypes for which the highlighting isn't (and can't be) enabled.
 
@@ -88,19 +89,41 @@ A list of filetypes for which the highlighting isn't (and can't be) enabled.
     ['unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m', 'nerdtree']
 
 -----------------------------------------------------------------------------
-g:lengthmatters_match_name         default: 'OverLength'
+*g:lengthmatters_match_name*         default: 'OverLength'
 
 The name of the syntax element that will be used to highlight and match the
 overly long lines.
 
------------------------------------------------------------------------------
-g:lengthmatters_colors             default: 'ctermbg=lightgray guibg=darkgray'
 
-By changing this value you can customize the colors of the highlighted parts.
+==============================================================================
+Section 4: Highlighting                             *LengthmattersHighlighting*
+
+This plugin provides a default highligting of the match which is:
+'ctermbg=lightgray guibg=gray'. If you want to change that, you have two
+options:
+
+1. Change the actual colors with the *lengthmatters#highlight* function:
+
+    call lengthmatters#highlight('ctermbg=10 ctermfg=3')
+
+2. Link the match group to another highlight group with the
+*lengthmatters#highlight_link_to* function (just as if you used |:hi-link|):
+
+    call lengthmatters#highlight_link_to('ColorColumn')
+
+You can call one of these function directly in your |vimrc| or you can call
+them on a per-colorscheme basis.
+
+Note you have to use one of these two functions in order to manipulate the
+highlighting, since the plugin performs some dark magic behind the scenes in
+order to keep the highlighting (and you) happy.
+
+The highlighting is reloaded when you call one of the functions, just as if
+you called :LengthmattersReload.
 
 
 ==============================================================================
-Section 4: License                                       *LengthmattersLicense*
+Section 5: License                                       *LengthmattersLicense*
 
 DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
                     Version 2, December 2004
@@ -118,14 +141,14 @@ DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 
 
 ==============================================================================
-Section 5: Bugs                                             *LengthmattersBugs*
+Section 6: Bugs                                             *LengthmattersBugs*
 
 If you find any bugs, I'll be more than happy to help you! Just open an issue
 on GitHub (https://github.com/whatyouhide/vim-lengthmatters).
 
 
 ==============================================================================
-Section 6: Contributing                             *LengthmattersContributing*
+Section 7: Contributing                             *LengthmattersContributing*
 
 Any kind of help is more than appreciated! You can help by actually
 contributing to the code (make a Pull Request), by helping with the
@@ -135,7 +158,7 @@ http://github.com/whatyouhide/vim-lengthmatters.
 
 
 ==============================================================================
-Section 7: About                                           *LengthmattersAbout*
+Section 8: About                                           *LengthmattersAbout*
 
 Build with vim and :love: by Andrea Leopardi <an.leopardi@gmail.com>.
 All of the code is on GitHub:

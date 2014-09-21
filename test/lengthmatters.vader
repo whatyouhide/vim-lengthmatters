@@ -5,10 +5,15 @@ Execute (a variable shows that the plugin has been loaded):
 Execute (global variables are set):
   Assert exists('g:lengthmatters_on_by_default')
   Assert exists('g:lengthmatters_match_name')
-  Assert exists('g:lengthmatters_colors')
   Assert exists('g:lengthmatters_start_at_column')
   Assert exists('g:lengthmatters_excluded')
   Assert exists('g:lengthmatters_use_textwidth')
+
+
+Execute (autoload functions are provided):
+  " These calls shouldn't throw errors.
+  call lengthmatters#highlight_link_to('Comment')
+  call lengthmatters#highlight('ctermbg=33')
 
 
 Execute (global commands are provided):
@@ -19,24 +24,24 @@ Execute (global commands are provided):
   Assert exists(':LengthmattersDisableAll')
 
 
-Execute (LengthmattersEnable() forces enabling of the plugin):
+Execute (LengthmattersEnable forces enabling of the plugin):
   LengthmattersEnable
-  Assert exists('b:lengthmatters_active')
-  Assert b:lengthmatters_active
+  Assert exists('w:lengthmatters_active')
+  Assert w:lengthmatters_active
 
 
-Execute (LengthmattersEnable() always creates an hl group):
+Execute (LengthmattersEnable always creates an hl group):
   LengthmattersEnable
   Assert hlexists(g:lengthmatters_match_name)
 
 
-Execute (LengthmattersDisable() forces disabling of the plugin):
+Execute (LengthmattersDisable forces disabling of the plugin):
   LengthmattersDisable
-  Assert exists('b:lengthmatters_active')
-  Assert !b:lengthmatters_active
+  Assert exists('w:lengthmatters_active')
+  Assert !w:lengthmatters_active
 
 
-Execute (LengthmattersDisable() deletes a match if present):
+Execute (LengthmattersDisable deletes a match if present):
   let number_of_matches = len(getmatches())
   LengthmattersEnable
   LengthmattersDisable
@@ -47,8 +52,33 @@ Execute (Lengthmatter is inactive in the excluded filetypes):
   let g:lengthmatters_excluded = ['foobar']
 
   set filetype=foobar
-  Assert !b:lengthmatters_active
+  Assert !w:lengthmatters_active
 
   LengthmattersDisable
   LengthmattersEnable
-  Assert !b:lengthmatters_active
+  Assert !w:lengthmatters_active
+
+
+Execute (highlighting can be forced using colors):
+  let id = hlID(g:lengthmatters_match_name)
+  call lengthmatters#highlight('cterm=bold ctermfg=10 ctermbg=11 guibg=#000000')
+
+  AssertEqual 10, synIDattr(id, 'fg', 'cterm')
+  AssertEqual 11, synIDattr(id, 'bg', 'cterm')
+  AssertEqual '#000000', synIDattr(id, 'bg#', 'gui')
+  AssertEqual '1', synIDattr(id, 'bold')
+  AssertEqual '', synIDattr(id, 'italic')
+
+  " Let's change only one attribute
+  call lengthmatters#highlight('cterm=bold ctermfg=1 ctermbg=11 guibg=#000000')
+  AssertEqual 1, synIDattr(id, 'fg', 'cterm')
+
+
+Execute (if the match is linked to an highlighting group, it stays that way):
+  let id = hlID(g:lengthmatters_match_name)
+
+  call lengthmatters#highlight_link_to('Comment')
+  AssertEqual hlID('Comment'), synIDtrans(id)
+
+  call lengthmatters#highlight_link_to('Function')
+  AssertEqual hlID('Function'), synIDtrans(id)

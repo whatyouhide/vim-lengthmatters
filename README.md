@@ -25,15 +25,15 @@ Plugin 'whatyouhide/lengthmatters'
 ```
 
 You pathogen dinosaurs can just clone the repo:
-``` bash
+```
 git clone https://github.com/whatyouhide/vim-lengthmatters.git ~/.vim/bundle
 ```
 
 
 ## What's in it
 
-The highlighting functionality operates always on a **per-buffer** basis,
-meaning you can keep it enabled on a buffer and disabled on another one at the
+The highlighting functionality operates always on a **per-window** basis,
+meaning you can keep it enabled on a window and disabled on another one at the
 same time.
 
 By default, it's based on the value of the `textwidth` option (it *feels*
@@ -42,13 +42,13 @@ infos.
 
 The plugin provides a bunch of commands:
 
-- `:LengthmattersToggle`: toggle the highlighting for the current buffer
-- `:LengthmattersEnable`: enable the highlighting for the current buffer
-- `:LengthmattersDisable`: disable the highlighting for the current buffer
+- `:LengthmattersToggle`: toggle the highlighting for the current window
+- `:LengthmattersEnable`: enable the highlighting for the current window
+- `:LengthmattersDisable`: disable the highlighting for the current window
 - `:LengthmattersReload`: force reloading (useful if something goes wrong, or
     `textwidth` changes, or god knows what)
-- `:LengthmattersEnableAll`: enable the highlighting for all open buffers
-- `:LengthmattersDisableAll`: disable the highlighting for all open buffers
+- `:LengthmattersEnableAll`: enable the highlighting for all open windows
+- `:LengthmattersDisableAll`: disable the highlighting for all open windows
 
 
 ## Configuration
@@ -59,14 +59,18 @@ To set a variable in vim (for example `g:foo` to the string `foo`), just do:
 let g:foo = 'foo'
 ```
 
-##### `g:lengthmatters_on_by_default`
+Most of the configuration for this plugin can be done through a handful of
+variables. The only thing you have to use functions for is highlighting. Read
+the [relative section](#hl) for how to do it.
+
+#### `g:lengthmatters_on_by_default`
 
 (defaults to `1`)  
 If this variable is set to `0`, no highlighting will be done
-when opening a new buffer. Highlighting can still be activated with one of the
+when opening a new window. Highlighting can still be activated with one of the
 previously mentioned commands.
 
-##### `g:lengthmatters_start_at_column`
+#### `g:lengthmatters_start_at_column`
 
 (defaults to `81`)  
 The value of this variable is the *first character* to be highlighted; the
@@ -74,13 +78,13 @@ highlighting will continue until the end of the line. This means that if it's
 okay for lines to be `40` characters longm length of `40` characters (because
 you're from 1920 or something) you set this variable to `41`.
 
-##### `g:lengthmatters_use_textwidth`
+#### `g:lengthmatters_use_textwidth`
 
 (defaults to `1`)  
 Whether to highlight based on the value of `textwidth`. If `textwidth` is not
 set, it will fall back to `g:lengthmatters_start_at_column`.
 
-##### `g:lengthmatters_excluded`
+#### `g:lengthmatters_excluded`
 
 (defaults to
 `['unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m',
@@ -88,22 +92,38 @@ set, it will fall back to `g:lengthmatters_start_at_column`.
 
 A list of **filetypes** for which the highlighting isn't (and can't be) enabled.
 
-##### `g:lengthmatters_match_name`
+#### `g:lengthmatters_match_name`
 
 (defaults to `OverLength`)  
 The name of the syntax element that will be used to highlight and match the
 overly long lines.
 
-##### `g:lengthmatters_colors`
+#### <a name=hl></a> Highlighting
 
-(defaults to `ctermbg=lightgray guibg=darkgray`)  
-By changing this value you can customize the colors of the highlighted parts.
-This can be done also with the command:
-
+The plugin provides a default highlighting of:
 ``` viml
-highlight [match-name] [colors]
+hi WhateverMatchName ctermbg=lightgray guibg=gray
 ```
 
+If you want to change that, you have two options.
+
+Change the actual colors: use the `lengthmatters#highlight` function.
+``` viml
+call lengthmatters#highlight('ctermbg=3 ctermfg=10')
+```
+
+Link the group to another highlight group: use the
+`lengthmatters#highlight_link_to` function.
+``` viml
+call lengthmatters#highlight_link_to('ColorColumn')
+```
+
+**Note** that you have to use one of these two functions in order to manipulate
+the highlighting, since the plugin performs some dark magic behind the scenes in
+order to keep the highlighting (and you) happy.
+
+The highlighting is reloaded when you call one of the functions, just as if you
+called `:LengthmattersReload`.
 
 
 ## Testing
