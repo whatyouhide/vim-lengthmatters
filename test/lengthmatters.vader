@@ -75,8 +75,10 @@ Execute (highlighting can be forced using colors):
 
 
 Execute (if the match is linked to an highlighting group, it stays that way):
-  call lengthmatters#highlight_link_to('Comment')
-  AssertEqual hlID('Comment'), synIDtrans(hlID(g:lengthmatters_match_name))
+  let id = hlID(g:lengthmatters_match_name)
 
-  call lengthmatters#highlight_link_to('Function')
-  AssertEqual hlID('Function'), synIDtrans(hlID(g:lengthmatters_match_name))
+  call lengthmatters#highlight_link_to('Comment')
+  AssertEqual hlID('Comment'), synIDtrans(id)
+
+  call lengthmatters#highlight_link_to('Identifier')
+  AssertEqual hlID('Identifier'), synIDtrans(id)
