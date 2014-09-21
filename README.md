@@ -8,7 +8,7 @@ whatever width you like).
 ![screenshot][screenshot]
 
 I've had this functionality in my `.vimrc` for a long time, and finally decided
-to extract it into a plugin. The idea is extremely simple, a gazillion example
+to extract it into a plugin. The idea is extremely simple, a gazillion examples
 of how to to this can be found online, but still... I like making plugins.
 
 ## Installation
@@ -94,11 +94,11 @@ A list of **filetypes** for which the highlighting isn't (and can't be) enabled.
 
 #### `g:lengthmatters_match_name`
 
-(defaults to `OverLength`)  
+(defaults to `'OverLength'`)  
 The name of the syntax element that will be used to highlight and match the
 overly long lines.
 
-#### <a name=hl></a> Highlighting
+### <a name=hl></a> Highlighting
 
 The plugin provides a default highlighting of:
 ``` viml

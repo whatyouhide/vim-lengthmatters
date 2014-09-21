@@ -2,11 +2,10 @@
 if exists('g:loaded_lengthmatters') | finish | endif
 
 
-" A small helper func to set the default value of an int/string variable.
+" A small helper func to set the default value of a variable.
 function! s:Default(name, value)
   if exists('g:lengthmatters_' . a:name) | return | endif
-  let l:val = (type(a:value) == type('') ? string(a:value) : a:value)
-  exec 'let g:lengthmatters_' . a:name . ' = ' . l:val
+  let g:lengthmatters_{a:name} = a:value
 endfunction
 
 
@@ -15,16 +14,14 @@ call s:Default('on_by_default', 1)
 call s:Default('use_textwidth', 1)
 call s:Default('start_at_column', 81)
 call s:Default('match_name', 'OverLength')
+
+call s:Default('excluded',
+      \ ['unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m', 'nerdtree'])
+
 call s:Default('highlight_command',
       \ 'highlight ' . g:lengthmatters_match_name .
       \ ' ctermbg=lightgray guibg=gray'
       \ )
-
-" Lists are annoying so set them manually.
-if (!exists('g:lengthmatters_excluded'))
-  let g:lengthmatters_excluded = ['unite', 'tagbar', 'startify',
-        \ 'gundo', 'vimshell', 'w3m', 'nerdtree']
-endif
 
 
 
@@ -85,9 +82,20 @@ endfunction
 
 " Execute the highlight command.
 function! s:Highlight()
+  " Clear every previous highlight.
   exec 'hi clear ' . g:lengthmatters_match_name
   exec 'hi link ' . g:lengthmatters_match_name . ' NONE'
-  exec g:lengthmatters_highlight_command
+
+  " The user forced something, so use that something. See the functions defined
+  " in autoload/lengthmatters.vim.
+  let l:name = g:lengthmatters_match_name
+  if exists('g:lengthmatters_linked_to')
+    exe 'hi link ' . l:name . ' ' . g:lengthmatters_linked_to
+  elseif exists('g:lengthmatters_highlight_colors')
+    exe 'hi ' . l:name . ' ' . g:lengthmatters_highlight_colors
+  else
+    exec g:lengthmatters_highlight_command
+  endif
 endfunction
 
 
