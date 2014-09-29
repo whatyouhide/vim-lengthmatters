@@ -88,7 +88,7 @@ set, it will fall back to `g:lengthmatters_start_at_column`.
 
 (defaults to
 `['unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m',
-'nerdtree']`)  
+'nerdtree', 'help']`)  
 
 A list of **filetypes** for which the highlighting isn't (and can't be) enabled.
 
@@ -100,20 +100,25 @@ overly long lines.
 
 ### <a name=hl></a> Highlighting
 
-The plugin provides a default highlighting of:
+The plugin provides a default highlighting of `reverse` both for terminal vim
+and GUI vim:
 ``` viml
-hi WhateverMatchName ctermbg=lightgray guibg=gray
+hi [WhateverMatchName] cterm=reverse gui=reverse
 ```
 
 If you want to change that, you have two options.
 
-Change the actual colors: use the `lengthmatters#highlight` function.
+##### `g:lengthmatters#highlight`
+
+To change the actual colors, use the `lengthmatters#highlight` function:
 ``` viml
 call lengthmatters#highlight('ctermbg=3 ctermfg=10')
 ```
 
-Link the group to another highlight group: use the
-`lengthmatters#highlight_link_to` function.
+##### `g:lengthmatters#highlight_link_to`
+
+To link the group to another highlight group, use the
+`lengthmatters#highlight_link_to` function:
 ``` viml
 call lengthmatters#highlight_link_to('ColorColumn')
 ```

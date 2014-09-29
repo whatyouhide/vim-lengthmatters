@@ -1,5 +1,5 @@
 " Prevent from loading multiple times.
-if exists('g:loaded_lengthmatters') | finish | endif
+if exists('g:loaded_lengthmatters') || &cp | finish | endif
 
 
 " A small helper func to set the default value of a variable.
@@ -15,12 +15,14 @@ call s:Default('use_textwidth', 1)
 call s:Default('start_at_column', 81)
 call s:Default('match_name', 'OverLength')
 
-call s:Default('excluded',
-      \ ['unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m', 'nerdtree'])
+call s:Default('excluded', [
+      \   'unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m',
+      \   'nerdtree', 'help'
+      \ ])
 
 call s:Default('highlight_command',
       \ 'highlight ' . g:lengthmatters_match_name .
-      \ ' ctermbg=lightgray guibg=gray'
+      \ ' cterm=reverse gui=reverse'
       \ )
 
 

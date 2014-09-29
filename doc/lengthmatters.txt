@@ -84,9 +84,18 @@ set, it will fall back to g:lengthmatters_start_at_column.
 
 A list of filetypes for which the highlighting isn't (and can't be) enabled.
 
-*LengthmattersExcluded* The default list of excluded filetypes is:
+*LengthmattersExcluded* The default list of excluded filetypes is: >
 
-    ['unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m', 'nerdtree']
+  [
+    'unite',
+    'tagbar',
+    'startify',
+    'gundo',
+    'vimshell',
+    'w3m',
+    'nerdtree',
+    'help'
+  ]
 
 -----------------------------------------------------------------------------
 *g:lengthmatters_match_name*         default: 'OverLength'
@@ -99,15 +108,15 @@ overly long lines.
 Section 4: Highlighting                             *LengthmattersHighlighting*
 
 This plugin provides a default highligting of the match which is:
-'ctermbg=lightgray guibg=gray'. If you want to change that, you have two
+'cterm=reverse gui=reverse'. If you want to change that, you have two
 options:
 
-1. Change the actual colors with the *lengthmatters#highlight* function:
+1. Change the actual colors with the *lengthmatters#highlight* function: >
 
     call lengthmatters#highlight('ctermbg=10 ctermfg=3')
 
 2. Link the match group to another highlight group with the
-*lengthmatters#highlight_link_to* function (just as if you used |:hi-link|):
+*lengthmatters#highlight_link_to* function (just as if you used |:hi-link|): >
 
     call lengthmatters#highlight_link_to('ColorColumn')
 
