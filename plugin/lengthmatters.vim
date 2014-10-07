@@ -9,21 +9,35 @@ function! s:Default(name, value)
 endfunction
 
 
+" Another helper function that creates a default highlighting command based on
+" the current colorscheme (it's always updated to the *current* colorscheme).
+" By default, it creates a command that highlights the overlength match with the
+" same bg as Comment's fg and the same fg as Normal's bg. It should look good on
+" every colorscheme.
+function! s:DefaultHighlighting()
+  let cmd = 'highlight ' . g:lengthmatters_match_name
+
+  for md in ['cterm', 'term', 'gui']
+    let bg = synIDattr(hlID('Comment'), 'fg', md)
+    let fg = synIDattr(hlID('Normal'), 'bg', md)
+    if !empty(bg) | let cmd .= ' ' . md . 'bg=' . bg | endif
+    if !empty(fg) | let cmd .= ' ' . md . 'fg=' . fg | endif
+  endfor
+
+  return cmd
+endfunction
+
+
 " Set some defaults.
 call s:Default('on_by_default', 1)
 call s:Default('use_textwidth', 1)
 call s:Default('start_at_column', 81)
 call s:Default('match_name', 'OverLength')
-
+call s:Default('highlight_command', s:DefaultHighlighting())
 call s:Default('excluded', [
       \   'unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m',
       \   'nerdtree', 'help', 'qf'
       \ ])
-
-call s:Default('highlight_command',
-      \ 'highlight ' . g:lengthmatters_match_name .
-      \ ' cterm=reverse gui=reverse'
-      \ )
 
 
 
@@ -77,7 +91,7 @@ endfunction
 
 
 " Return true if the textwidth should be used for creating the hl match.
-function s:ShouldUseTw()
+function! s:ShouldUseTw()
   return g:lengthmatters_use_textwidth && &tw > 0
 endfunction
 
@@ -96,7 +110,7 @@ function! s:Highlight()
   elseif exists('g:lengthmatters_highlight_colors')
     exe 'hi ' . l:name . ' ' . g:lengthmatters_highlight_colors
   else
-    exec g:lengthmatters_highlight_command
+    exec s:DefaultHighlighting()
   endif
 endfunction
 

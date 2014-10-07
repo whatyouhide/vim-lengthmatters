@@ -102,22 +102,22 @@ overly long lines.
 
 ### <a name=hl></a> Highlighting
 
-The plugin provides a default highlighting of `reverse` both for terminal vim
-and GUI vim:
-``` viml
-hi [WhateverMatchName] cterm=reverse gui=reverse
-```
+The plugin provides a default highlighting which is based on the current
+colorscheme. The foreground color is taken from the background color of the
+`Normal` highlight group, while the background color is taken from the
+foreground color of the `Comment` group. This *should* look decent on pretty
+much every colorscheme.
 
 If you want to change that, you have two options.
 
-##### `g:lengthmatters#highlight`
+##### `lengthmatters#highlight`
 
 To change the actual colors, use the `lengthmatters#highlight` function:
 ``` viml
 call lengthmatters#highlight('ctermbg=3 ctermfg=10')
 ```
 
-##### `g:lengthmatters#highlight_link_to`
+##### `lengthmatters#highlight_link_to`
 
 To link the group to another highlight group, use the
 `lengthmatters#highlight_link_to` function:

@@ -17,7 +17,7 @@ CONTENTS                                                *LengthmattersContents*
 
 1. Usage ................ |LengthmattersUsage|
 2. Commands ............. |LengthmattersCommands|
-3. Configuration ........ |LengthmattersMappings|
+3. Configuration ........ |LengthmattersConfiguration|
 4. Highlighting ......... |LengthmattersHighlighting|
 5. License .............. |LengthmattersLicense|
 6. Bugs ................. |LengthmattersBugs|
@@ -108,9 +108,11 @@ overly long lines.
 ==============================================================================
 Section 4: Highlighting                             *LengthmattersHighlighting*
 
-This plugin provides a default highligting of the match which is:
-'cterm=reverse gui=reverse'. If you want to change that, you have two
-options:
+This plugin provides a default highligting of the match which is based on the
+current colorscheme: the foreground is exactly the background of the 'Normal'
+group, while the background is the foreground of the 'Comment' group.
+
+If you want to change that, you have two options:
 
 1. Change the actual colors with the *lengthmatters#highlight* function: >
 
