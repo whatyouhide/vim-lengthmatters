@@ -90,7 +90,7 @@ set, it will fall back to `g:lengthmatters_start_at_column`.
 
 (defaults to
 `['unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m',
-'nerdtree', 'help']`)  
+'nerdtree', 'help', 'qf']`)  
 
 A list of **filetypes** for which the highlighting isn't (and can't be) enabled.
 
