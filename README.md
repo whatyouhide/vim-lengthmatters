@@ -19,11 +19,11 @@ I personally moved from [Vundle][vundle] to [vim-plug][vim-plug] a while ago and
 never looked back. Anyways, whatever floats your boat:
 ``` viml
 " vim-plug
-Plug 'whatyouhide/lengthmatters'
+Plug 'whatyouhide/vim-lengthmatters'
 " NeoBundle
-NeoBundle 'whatyouhide/lengthmatters'
+NeoBundle 'whatyouhide/vim-lengthmatters'
 " Vundle
-Plugin 'whatyouhide/lengthmatters'
+Plugin 'whatyouhide/vim-lengthmatters'
 ```
 
 You pathogen dinosaurs can just clone the repo:
