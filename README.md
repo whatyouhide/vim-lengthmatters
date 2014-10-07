@@ -19,11 +19,11 @@ I personally moved from [Vundle][vundle] to [vim-plug][vim-plug] a while ago and
 never looked back. Anyways, whatever floats your boat:
 ``` viml
 " vim-plug
-Plug 'whatyouhide/lengthmatters'
+Plug 'whatyouhide/vim-lengthmatters'
 " NeoBundle
-NeoBundle 'whatyouhide/lengthmatters'
+NeoBundle 'whatyouhide/vim-lengthmatters'
 " Vundle
-Plugin 'whatyouhide/lengthmatters'
+Plugin 'whatyouhide/vim-lengthmatters'
 ```
 
 You pathogen dinosaurs can just clone the repo:
@@ -90,7 +90,7 @@ set, it will fall back to `g:lengthmatters_start_at_column`.
 
 (defaults to
 `['unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m',
-'nerdtree', 'help']`)  
+'nerdtree', 'help', 'qf']`)  
 
 A list of **filetypes** for which the highlighting isn't (and can't be) enabled.
 

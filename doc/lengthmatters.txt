@@ -94,7 +94,8 @@ A list of filetypes for which the highlighting isn't (and can't be) enabled.
     'vimshell',
     'w3m',
     'nerdtree',
-    'help'
+    'help',
+    'qf'
   ]
 
 -----------------------------------------------------------------------------

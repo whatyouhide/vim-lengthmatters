@@ -17,7 +17,7 @@ call s:Default('match_name', 'OverLength')
 
 call s:Default('excluded', [
       \   'unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m',
-      \   'nerdtree', 'help'
+      \   'nerdtree', 'help', 'qf'
       \ ])
 
 call s:Default('highlight_command',
