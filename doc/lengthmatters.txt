@@ -99,6 +99,12 @@ A list of filetypes for which the highlighting isn't (and can't be) enabled.
   ]
 
 -----------------------------------------------------------------------------
+*g:lengthmatters_exclude_readonly*      default: 1
+
+If this variable is set to `1`, no highlighting will be done when opening a
+read-only file.
+
+-----------------------------------------------------------------------------
 *g:lengthmatters_match_name*         default: 'OverLength'
 
 The name of the syntax element that will be used to highlight and match the

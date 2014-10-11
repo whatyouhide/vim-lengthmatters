@@ -38,6 +38,7 @@ call s:Default('excluded', [
       \   'unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m',
       \   'nerdtree', 'help', 'qf'
       \ ])
+call s:Default('exclude_readonly', 1)
 
 
 
@@ -47,6 +48,9 @@ call s:Default('excluded', [
 function! s:Enable()
   " Do nothing if this is an excluded filetype.
   if index(g:lengthmatters_excluded, &ft) >= 0 | return | endif
+
+  " Do nothing if the file is read-only and we want to exclude it.
+  if &readonly && g:lengthmatters_exclude_readonly | return | endif
 
   " Force a reload if the textwidth is in use and it's changed since the last
   " time.

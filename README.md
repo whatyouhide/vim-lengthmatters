@@ -94,6 +94,12 @@ set, it will fall back to `g:lengthmatters_start_at_column`.
 
 A list of **filetypes** for which the highlighting isn't (and can't be) enabled.
 
+#### `g:lengthmatters_exclude_readonly`
+
+(defaults to `1`)
+If this variable is set to `1`, no highlighting will be done when opening a
+read-only file.
+
 #### `g:lengthmatters_match_name`
 
 (defaults to `'OverLength'`)  
