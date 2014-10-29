@@ -8,7 +8,6 @@ function! s:Default(name, value)
   let g:lengthmatters_{a:name} = a:value
 endfunction
 
-
 " Another helper function that creates a default highlighting command based on
 " the current colorscheme (it's always updated to the *current* colorscheme).
 " By default, it creates a command that highlights the overlength match with the
@@ -20,6 +19,11 @@ function! s:DefaultHighlighting()
   for md in ['cterm', 'term', 'gui']
     let bg = synIDattr(hlID('Comment'), 'fg', md)
     let fg = synIDattr(hlID('Normal'), 'bg', md)
+
+    " Break out if we're in GUI vim and the mode isn't 'gui' since GUI tries to
+    " parse cterm values too, and it can screw up in some cases.
+    if has('gui') && md !=# 'gui' | continue | endif
+
     if !empty(bg) | let cmd .= ' ' . md . 'bg=' . bg | endif
     if !empty(fg) | let cmd .= ' ' . md . 'fg=' . fg | endif
   endfor
