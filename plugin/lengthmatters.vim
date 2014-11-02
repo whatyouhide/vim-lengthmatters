@@ -22,7 +22,9 @@ function! s:DefaultHighlighting()
 
     " Break out if we're in GUI vim and the mode isn't 'gui' since GUI tries to
     " parse cterm values too, and it can screw up in some cases.
-    if has('gui') && md !=# 'gui' | continue | endif
+    if has('gui_running') && md !=# 'gui'
+      continue
+    endif
 
     if !empty(bg) | let cmd .= ' ' . md . 'bg=' . bg | endif
     if !empty(fg) | let cmd .= ' ' . md . 'fg=' . fg | endif
