@@ -47,13 +47,18 @@ call s:Default('excluded', [
 call s:Default('exclude_readonly', 1)
 
 
+function! s:ShouldBeDisabled()
+  " buftype is 'terminal' in :terminal buffers in NeoVim
+  return (index(g:lengthmatters_excluded, &ft) >= 0) || &buftype == 'terminal'
+endfunction
+
 
 " Enable the highlighting (if the filetype is not an excluded ft). Reuse the
 " match of the current buffer if available, unless the textwidth has changed. If
 " it has, force a reload by disabling the highlighting and re-enabling it.
 function! s:Enable()
   " Do nothing if this is an excluded filetype.
-  if index(g:lengthmatters_excluded, &ft) >= 0 | return | endif
+  if s:ShouldBeDisabled() | return | endif
 
   " Do nothing if the file is read-only and we want to exclude it.
   if &readonly && g:lengthmatters_exclude_readonly | return | endif
