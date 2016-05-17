@@ -95,7 +95,8 @@ A list of filetypes for which the highlighting isn't (and can't be) enabled.
     'w3m',
     'nerdtree',
     'help',
-    'qf'
+    'qf',
+    'dirvish'
   ]
 
 -----------------------------------------------------------------------------
