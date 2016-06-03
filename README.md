@@ -77,8 +77,8 @@ previously mentioned commands.
 (defaults to `81`)  
 The value of this variable is the *first character* to be highlighted; the
 highlighting will continue until the end of the line. This means that if it's
-okay for lines to be `40` characters longm length of `40` characters (because
-you're from 1920 or something) you set this variable to `41`.
+okay for lines to be `40` characters long (because you're from 1920 or 
+something) you set this variable to `41`.
 
 #### `g:lengthmatters_use_textwidth`
 
