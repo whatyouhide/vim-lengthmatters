@@ -57,6 +57,8 @@ endfunction
 " match of the current buffer if available, unless the textwidth has changed. If
 " it has, force a reload by disabling the highlighting and re-enabling it.
 function! s:Enable()
+  let w:lengthmatters_active = 1
+
   " Do nothing if this is an excluded filetype.
   if s:ShouldBeDisabled() | return | endif
 
@@ -67,10 +69,10 @@ function! s:Enable()
   " time.
   if s:ShouldUseTw() && s:TwChanged()
     call s:Disable()
+    let w:lengthmatters_active = 1
     let w:lengthmatters_tw = &tw
   endif
 
-  let w:lengthmatters_active = 1
   call s:Highlight()
 
   " Create a new match if it doesn't exist already (in order to avoid creating
@@ -141,10 +143,16 @@ endfunction
 " script). It disables the highlighting on the excluded filetypes and enables it
 " if it wasn't enabled/disabled before or if there's a new textwidth.
 function! s:AutocmdTrigger()
-  if index(g:lengthmatters_excluded, &ft) >= 0
-    call s:Disable()
-  elseif !exists('w:lengthmatters_active') && g:lengthmatters_on_by_default
-        \ || (s:ShouldUseTw() && s:TwChanged())
+  if !exists('w:lengthmatters_active')
+    if g:lengthmatters_on_by_default
+      call s:Enable()
+    endif
+  elseif index(g:lengthmatters_excluded, &ft) >= 0
+    if w:lengthmatters_active
+      call s:Disable()
+      let w:lengthmatters_active = 1
+    endif
+  elseif w:lengthmatters_active
     call s:Enable()
   endif
 endfunction
