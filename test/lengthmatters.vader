@@ -48,17 +48,6 @@ Execute (LengthmattersDisable deletes a match if present):
   AssertEqual number_of_matches, len(getmatches())
 
 
-Execute (Lengthmatter is inactive in the excluded filetypes):
-  let g:lengthmatters_excluded = ['foobar']
-
-  set filetype=foobar
-  Assert !w:lengthmatters_active
-
-  LengthmattersDisable
-  LengthmattersEnable
-  Assert !w:lengthmatters_active
-
-
 Execute (highlighting can be forced using colors):
   let id = hlID(g:lengthmatters_match_name)
   call lengthmatters#highlight('cterm=bold ctermfg=10 ctermbg=11 guibg=#000000')
