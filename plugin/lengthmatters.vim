@@ -147,7 +147,7 @@ function! s:AutocmdTrigger()
     if g:lengthmatters_on_by_default
       call s:Enable()
     endif
-  elseif index(g:lengthmatters_excluded, &ft) >= 0
+  elseif s:ShouldBeDisabled()
     if w:lengthmatters_active
       call s:Disable()
       let w:lengthmatters_active = 1
