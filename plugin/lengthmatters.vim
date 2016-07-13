@@ -45,6 +45,7 @@ call s:Default('excluded', [
       \   'nerdtree', 'help', 'qf', 'dirvish'
       \ ])
 call s:Default('exclude_readonly', 1)
+call s:Default('highlight_one_column', 0)
 
 
 function! s:ShouldBeDisabled()
@@ -79,7 +80,11 @@ function! s:Enable()
   " multiple matches for the same buffer).
   if !exists('w:lengthmatters_match')
     let l:column = s:ShouldUseTw() ? &tw + 1 : g:lengthmatters_start_at_column
-    let l:regex = '\%' . l:column . 'v.\+'
+    if g:lengthmatters_highlight_one_column == 1
+        let l:regex = '\%' . l:column . 'v.'
+    else
+        let l:regex = '\%' . l:column . 'v.\+'
+    endif
     let w:lengthmatters_match = matchadd(g:lengthmatters_match_name, l:regex)
   endif
 endfunction

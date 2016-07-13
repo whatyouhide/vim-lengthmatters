@@ -96,7 +96,7 @@ A list of **filetypes** for which the highlighting isn't (and can't be) enabled.
 
 #### `g:lengthmatters_exclude_readonly`
 
-(defaults to `1`)
+(defaults to `1`)  
 If this variable is set to `1`, no highlighting will be done when opening a
 read-only file.
 
@@ -105,6 +105,11 @@ read-only file.
 (defaults to `'OverLength'`)  
 The name of the syntax element that will be used to highlight and match the
 overly long lines.
+
+#### `g:lengthmatters_highlight_one_column`
+
+(defaults to `0`)  
+Only highlight one column instead of all columns up to EOL.
 
 ### <a name=hl></a> Highlighting
 

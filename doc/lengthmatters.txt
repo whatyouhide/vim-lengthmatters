@@ -111,6 +111,11 @@ read-only file.
 The name of the syntax element that will be used to highlight and match the
 overly long lines.
 
+-----------------------------------------------------------------------------
+*g:lengthmatters_highlight_one_column*         default: '0'
+
+Only highlight one column instead of all columns up to EOL.
+
 
 ==============================================================================
 Section 4: Highlighting                             *LengthmattersHighlighting*
