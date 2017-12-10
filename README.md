@@ -7,6 +7,11 @@
 Highlight the part of a line that doesn't fit into `textwidth` (or really,
 whatever width you like).
 
+> This project is not maintained anymore as I (@whatyouhide) have
+> stopped using Vim (a long time ago now) and am too busy in the
+> Elixir community. If you want to take over maintenance, please
+> shoot me an email, I'll be happy to help.
+
 ![screenshot][screenshot]
 
 I've had this functionality in my `.vimrc` for a long time, and finally decided
