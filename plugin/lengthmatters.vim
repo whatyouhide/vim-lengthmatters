@@ -49,8 +49,13 @@ call s:Default('highlight_one_column', 0)
 
 
 function! s:ShouldBeDisabled()
+  for excluded in g:lengthmatters_excluded
+    if &ft =~# '^'.excluded.'$'
+      return 1
+    endif
+  endfor
   " buftype is 'terminal' in :terminal buffers in NeoVim
-  return (index(g:lengthmatters_excluded, &ft) >= 0) || &buftype == 'terminal'
+  return &buftype == 'terminal'
 endfunction
 
 

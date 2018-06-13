@@ -98,6 +98,9 @@ set, it will fall back to `g:lengthmatters_start_at_column`.
 'nerdtree', 'help', 'qf', 'dirvish']`)  
 
 A list of **filetypes** for which the highlighting isn't (and can't be) enabled.
+They're regular expressions, so, for example, to disable highlighting in any
+helper debug window of [vim-go](https://github.com/fatih/vim-go), one can add
+`'godebug.*'` to the list.
 
 #### `g:lengthmatters_exclude_readonly`
 
