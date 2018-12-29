@@ -42,7 +42,7 @@ call s:Default('match_name', 'OverLength')
 call s:Default('highlight_command', s:DefaultHighlighting())
 call s:Default('excluded', [
       \   'unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m',
-      \   'nerdtree', 'help', 'qf', 'dirvish'
+      \   'nerdtree', 'dirvish'
       \ ])
 call s:Default('exclude_readonly', 1)
 call s:Default('highlight_one_column', 0)
@@ -54,8 +54,7 @@ function! s:ShouldBeDisabled()
       return 1
     endif
   endfor
-  " buftype is 'terminal' in :terminal buffers in NeoVim
-  return &buftype == 'terminal'
+  return &buftype != ''
 endfunction
 
 
