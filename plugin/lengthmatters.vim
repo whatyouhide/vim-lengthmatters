@@ -174,6 +174,9 @@ augroup lengthmatters
   " Enable (if it's the case) on a bunch of events (the filetype event is there
   " so that we can avoid highlighting excluded filetypes.
   autocmd WinEnter,BufEnter,BufRead,FileType * call s:AutocmdTrigger()
+  if has('nvim')
+    autocmd TermOpen * call s:AutocmdTrigger()
+  endif
   " Re-highlight the match on every colorscheme change (includes bg changes).
   autocmd ColorScheme * call s:Highlight()
 augroup END
