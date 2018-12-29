@@ -42,7 +42,7 @@ call s:Default('match_name', 'OverLength')
 call s:Default('highlight_command', s:DefaultHighlighting())
 call s:Default('excluded', [
       \   'unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m',
-      \   'nerdtree', 'help', 'qf', 'dirvish'
+      \   'nerdtree', 'dirvish'
       \ ])
 call s:Default('exclude_readonly', 1)
 call s:Default('highlight_one_column', 0)
@@ -54,8 +54,7 @@ function! s:ShouldBeDisabled()
       return 1
     endif
   endfor
-  " buftype is 'terminal' in :terminal buffers in NeoVim
-  return &buftype == 'terminal'
+  return &buftype != ''
 endfunction
 
 
@@ -174,6 +173,9 @@ augroup lengthmatters
   " Enable (if it's the case) on a bunch of events (the filetype event is there
   " so that we can avoid highlighting excluded filetypes.
   autocmd WinEnter,BufEnter,BufRead,FileType * call s:AutocmdTrigger()
+  if has('nvim')
+    autocmd TermOpen * call s:AutocmdTrigger()
+  endif
   " Re-highlight the match on every colorscheme change (includes bg changes).
   autocmd ColorScheme * call s:Highlight()
 augroup END
