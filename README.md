@@ -153,18 +153,14 @@ called `:LengthmattersReload`.
 
 ### <a name=hl></a> Adapt line length for different file types
 
-Different line length in different file types can be achieved by using variable
-'textwidth'.
+Different line length in different file types can be achieved with the
+`textwidth` variable. For example, if the default line is 80 characters
+and we want to have a line length of 120 characters only in Java files,
+we can do it like this:
 
-Example:
-
-If the default line is 80 characters and we want to have 120 characters in all
-of the java files we need to set the variable 'textwidth' locally. To do so we
-add the following line to our .vimrc file:
-``` viml
+```viml
 autocmd bufreadpre *.java setlocal textwidth=120
 ```
-
 
 ## Testing
 
