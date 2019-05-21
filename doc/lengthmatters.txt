@@ -147,6 +147,18 @@ order to keep the highlighting (and you) happy.
 The highlighting is reloaded when you call one of the functions, just as if
 you called :LengthmattersReload.
 
+Different line length in different file types can be achieved by using variable
+'textwidth'.
+
+Example:
+
+If the default line is 80 characters and we want to have 120 characters in all
+of the java files we need to set the variable 'textwidth' locally. To do so we
+add the following line to our .vimrc file:
+
+    autocmd bufreadpre *.java setlocal textwidth=120
+
+
 
 ==============================================================================
 Section 5: License                                       *LengthmattersLicense*
