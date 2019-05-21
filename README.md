@@ -151,6 +151,16 @@ order to keep the highlighting (and you) happy.
 The highlighting is reloaded when you call one of the functions, just as if you
 called `:LengthmattersReload`.
 
+### <a name=hl></a> Adapt line length for different file types
+
+Different line length in different file types can be achieved with the
+`textwidth` variable. For example, if the default line is 80 characters
+and we want to have a line length of 120 characters only in Java files,
+we can do it like this:
+
+```viml
+autocmd bufreadpre *.java setlocal textwidth=120
+```
 
 ## Testing
 
