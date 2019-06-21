@@ -55,7 +55,7 @@ function! s:ShouldBeDisabled()
       return 1
     endif
   endfor
-  return &buftype !=? ''
+  return &buftype !=# ''
 endfunction
 
 
