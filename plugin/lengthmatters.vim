@@ -42,7 +42,8 @@ call s:Default('match_name', 'OverLength')
 call s:Default('highlight_command', s:DefaultHighlighting())
 call s:Default('excluded', [
       \   'unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m',
-      \   'nerdtree', 'dirvish'
+      \   'nerdtree', 'dirvish', 'vim-plug', 'denite.*', 'vista.*', 'Mundo.*',
+      \   'defx', 'quickrun', 'codi', 'trans'
       \ ])
 call s:Default('exclude_readonly', 1)
 call s:Default('highlight_one_column', 0)
