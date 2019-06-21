@@ -1,5 +1,5 @@
 " Prevent from loading multiple times.
-if exists('g:loaded_lengthmatters') || &cp | finish | endif
+if exists('g:loaded_lengthmatters') || &compatible | finish | endif
 
 
 " A small helper func to set the default value of a variable.
@@ -50,11 +50,11 @@ call s:Default('highlight_one_column', 0)
 
 function! s:ShouldBeDisabled()
   for excluded in g:lengthmatters_excluded
-    if &ft =~# '^'.excluded.'$'
+    if &filetype =~# '^'.excluded.'$'
       return 1
     endif
   endfor
-  return &buftype != ''
+  return &buftype !=? ''
 endfunction
 
 
@@ -75,7 +75,7 @@ function! s:Enable()
   if s:ShouldUseTw() && s:TwChanged()
     call s:Disable()
     let w:lengthmatters_active = 1
-    let w:lengthmatters_tw = &tw
+    let w:lengthmatters_tw = &textwidth
   endif
 
   call s:Highlight()
@@ -83,7 +83,7 @@ function! s:Enable()
   " Create a new match if it doesn't exist already (in order to avoid creating
   " multiple matches for the same buffer).
   if !exists('w:lengthmatters_match')
-    let l:column = s:ShouldUseTw() ? &tw + 1 : g:lengthmatters_start_at_column
+    let l:column = s:ShouldUseTw() ? &textwidth + 1 : g:lengthmatters_start_at_column
     if g:lengthmatters_highlight_one_column == 1
         let l:regex = '\%' . l:column . 'v.'
     else
@@ -118,7 +118,7 @@ endfunction
 
 " Return true if the textwidth should be used for creating the hl match.
 function! s:ShouldUseTw()
-  return g:lengthmatters_use_textwidth && &tw > 0
+  return g:lengthmatters_use_textwidth && &textwidth > 0
 endfunction
 
 
@@ -144,7 +144,7 @@ endfunction
 " Return true if the textwidth has changed since the last time this plugin saw
 " it. We're assuming that no recorder tw means it changed.
 function! s:TwChanged()
-  return !exists('w:lengthmatters_tw') || &tw != w:lengthmatters_tw
+  return !exists('w:lengthmatters_tw') || &textwidth != w:lengthmatters_tw
 endfunction
 
 
