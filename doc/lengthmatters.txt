@@ -59,7 +59,7 @@ You can set a bunch of options to tweak the behavior of the plugin. Every
 option has a default value.
 
 -----------------------------------------------------------------------------
-*g:lengthmatters_on_by_default*      default: 1
+*g:lengthmatters_on_by_default*      default: !&diff
 
 If this variable is set to `0`, no highlighting will be done
 when opening a new buffer. Highlighting can still be activated with one of the

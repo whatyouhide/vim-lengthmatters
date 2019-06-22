@@ -35,7 +35,7 @@ endfunction
 
 
 " Set some defaults.
-call s:Default('on_by_default', 1)
+call s:Default('on_by_default', !&diff)
 call s:Default('use_textwidth', 1)
 call s:Default('start_at_column', 81)
 call s:Default('match_name', 'OverLength')

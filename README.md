@@ -72,7 +72,7 @@ the [relative section](#hl) for how to do it.
 
 #### `g:lengthmatters_on_by_default`
 
-(defaults to `1`)  
+(defaults to `!&diff`)  
 If this variable is set to `0`, no highlighting will be done
 when opening a new window. Highlighting can still be activated with one of the
 previously mentioned commands.
