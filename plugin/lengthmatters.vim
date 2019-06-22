@@ -109,7 +109,7 @@ endfunction
 
 " Toggle between active and inactive states.
 function! s:Toggle()
-  if !exists('w:lengthmatters_active') || !w:lengthmatters_active
+  if !get(w:, 'lengthmatters_active', 0)
     call s:Enable()
   else
     call s:Disable()

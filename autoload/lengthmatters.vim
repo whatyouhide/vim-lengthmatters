@@ -7,7 +7,7 @@ function! lengthmatters#highlight_link_to(group)
   endif
 
   let g:lengthmatters_linked_to = a:group
-  if exists(':LengthmattersReload') | exec 'LengthmattersReload' | endif
+  if get(w:, 'lengthmatters_active', 0) | exec 'LengthmattersReload' | endif
 endfunction
 
 
@@ -21,5 +21,5 @@ function! lengthmatters#highlight(colors)
   endif
 
   let g:lengthmatters_highlight_colors = a:colors
-  if exists(':LengthmattersReload') | exec 'LengthmattersReload' | endif
+  if get(w:, 'lengthmatters_active', 0) | exec 'LengthmattersReload' | endif
 endfunction
