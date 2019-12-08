@@ -55,7 +55,7 @@ function! s:ShouldBeDisabled()
       return 1
     endif
   endfor
-  return &buftype !=# ''
+  return &buftype !=# '' || &wrap == 1
 endfunction
 
 
@@ -173,7 +173,7 @@ augroup lengthmatters
   autocmd!
   " Enable (if it's the case) on a bunch of events (the filetype event is there
   " so that we can avoid highlighting excluded filetypes.
-  autocmd WinEnter,BufEnter,BufRead,FileType * call s:AutocmdTrigger()
+  autocmd WinEnter,BufEnter,BufRead,FileType,OptionSet * call s:AutocmdTrigger()
   if has('nvim')
     autocmd TermOpen * call s:AutocmdTrigger()
   endif
