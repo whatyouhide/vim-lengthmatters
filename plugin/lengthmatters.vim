@@ -86,9 +86,9 @@ function! s:Enable()
   if !exists('w:lengthmatters_match')
     let l:column = s:ShouldUseTw() ? &textwidth + 1 : g:lengthmatters_start_at_column
     if g:lengthmatters_highlight_one_column == 1
-        let l:regex = '\%' . l:column . 'v.'
+        let l:regex = '.\{' . (l:column - 1) . '\}\zs.'
     else
-        let l:regex = '\%' . l:column . 'v.\+'
+        let l:regex = '.\{' . (l:column - 1) . '\}\zs.\+'
     endif
     let w:lengthmatters_match = matchadd(g:lengthmatters_match_name, l:regex)
   endif
