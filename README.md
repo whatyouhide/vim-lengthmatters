@@ -1,9 +1,5 @@
 # lengthmatters.vim
 
-[![Build Status](https://travis-ci.org/whatyouhide/vim-lengthmatters.svg)](https://travis-ci.org/whatyouhide/vim-lengthmatters)
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/whatyouhide/vim-lengthmatters.svg)](http://isitmaintained.com/project/whatyouhide/vim-lengthmatters "Average time to resolve an issue")
-[![Percentage of issues still open](http://isitmaintained.com/badge/open/whatyouhide/vim-lengthmatters.svg)](http://isitmaintained.com/project/whatyouhide/vim-lengthmatters "Percentage of issues still open")
-
 Highlight the part of a line that doesn't fit into `textwidth` (or really,
 whatever width you like).
 
